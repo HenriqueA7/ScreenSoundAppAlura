@@ -2,8 +2,8 @@
 using System.Security.Cryptography;
 
 string mensagemDeBoasVindas = "Boas vindas ao Screen Sound";
-
-void ExibirMensagemDeBoasVindas()
+List<string> listaDeBandas = new List<string>();
+void ExibirLogo()
 {
     Console.WriteLine(@"
 ░██████╗░█████╗░██████╗░███████╗███████╗███╗░░██╗  ░██████╗░█████╗░██╗░░░██╗███╗░░██╗██████╗░
@@ -23,8 +23,9 @@ void ExibirOpcoesDoMenu()
     Console.WriteLine("4 exibir a nota de uma banda");
     Console.WriteLine("0 sair");
 
+    //o ! faz com que não seja aceito null
     Console.Write("\nDigite a sua opção: ");
-    string opcaoEscolhida = Console.ReadLine();
+    string opcaoEscolhida = Console.ReadLine()!;
     int opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
     //if (opcaoEscolhidaNumerica >= 0  && opcaoEscolhidaNumerica < 5)
     //{
@@ -41,10 +42,10 @@ void ExibirOpcoesDoMenu()
             Console.WriteLine("sair");
             break;
         case 1:
-            Console.WriteLine("registrar");
+            RegistrarBanda();
             break;
         case 2:
-            Console.WriteLine("mostrar");
+            ExibirBandas();
             break;
         case 3:
             Console.WriteLine("avaliar");
@@ -59,7 +60,34 @@ void ExibirOpcoesDoMenu()
     }
 }
 
-ExibirMensagemDeBoasVindas();
+void RegistrarBanda()
+{
+    Console.Clear();
+    Console.WriteLine("Registro de bandas");
+    Console.Write("Digite o nome da banda que deseja registrar: ");
+    string nomeDaBanda = Console.ReadLine()!;
+    listaDeBandas.Add(nomeDaBanda);
+    Console.WriteLine($"A banda {nomeDaBanda} foi registrada");
+    Thread.Sleep(2000);
+    Console.Clear();
+    ExibirLogo();
+    ExibirOpcoesDoMenu();
+}
+
+void ExibirBandas()
+{
+    Console.Clear();
+    Console.WriteLine("Bandas Registradas:");
+    for (int i = 0; i < listaDeBandas.Count; i++)
+    {
+        Console.WriteLine($"Banda {i+1}: {listaDeBandas[i]}");
+    }
+    //foreach (var band in listaDeBandas)
+    //{
+    //    Console.WriteLine(listaDeBandas);
+    //}
+}
+ExibirLogo();
 ExibirOpcoesDoMenu();
 
 //Jogo desafio - Número aleatório
