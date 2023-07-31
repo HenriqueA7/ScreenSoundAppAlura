@@ -78,14 +78,14 @@ void ExibirBandas()
 {
     Console.Clear();
     Console.WriteLine("Bandas Registradas:");
-    for (int i = 0; i < listaDeBandas.Count; i++)
-    {
-        Console.WriteLine($"Banda {i+1}: {listaDeBandas[i]}");
-    }
-    //foreach (var band in listaDeBandas)
+    //for (int i = 0; i < listaDeBandas.Count; i++)
     //{
-    //    Console.WriteLine(listaDeBandas);
+    //    Console.WriteLine($"Banda {i+1}: {listaDeBandas[i]}");
     //}
+    foreach (string banda in listaDeBandas)
+    {
+        Console.WriteLine($"Banda: {banda}");
+    }
 }
 ExibirLogo();
 ExibirOpcoesDoMenu();
