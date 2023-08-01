@@ -2,7 +2,22 @@
 using System.Security.Cryptography;
 
 string mensagemDeBoasVindas = "Boas vindas ao Screen Sound";
-List<string> listaDeBandas = new List<string>();
+//List<string> listaDeBandas = new List<string>();
+
+//tipo dicionário, key nome das bandas, value lista notas
+Dictionary<string, List<int>> bandasRegistradas= new Dictionary<string, List<int>>();
+bandasRegistradas.Add("Linkin Park", new List<int> { 1, 2, 3 });
+bandasRegistradas.Add("The Beatles", new List<int>());
+
+void voltar()
+{
+    Console.Write("\nPrecione qualquer tecla para voltar");
+    Console.ReadKey();
+    Console.Clear();
+    ExibirLogo();
+    ExibirOpcoesDoMenu();
+}
+
 void ExibirLogo()
 {
     Console.WriteLine(@"
@@ -26,6 +41,14 @@ void ExibirOpcoesDoMenu()
     //o ! faz com que não seja aceito null
     Console.Write("\nDigite a sua opção: ");
     string opcaoEscolhida = Console.ReadLine()!;
+    opcaoEscolhida = 
+        opcaoEscolhida != "0" && 
+        opcaoEscolhida != "1" && 
+        opcaoEscolhida != "2" && 
+        opcaoEscolhida != "3" && 
+        opcaoEscolhida != "4"
+        ? "5"
+        : opcaoEscolhida;
     int opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
     //if (opcaoEscolhidaNumerica >= 0  && opcaoEscolhidaNumerica < 5)
     //{
@@ -48,25 +71,37 @@ void ExibirOpcoesDoMenu()
             ExibirBandas();
             break;
         case 3:
-            Console.WriteLine("avaliar");
+            AvaliarBanda();
             break;
         case 4:
-            Console.WriteLine("exibir");
+            ExibirNotaMedia();
             break;
         default:
             Console.WriteLine("\nOpção inválida");
+            Thread.Sleep(2000);
+            Console.Clear();
+            ExibirLogo();
             ExibirOpcoesDoMenu();
             break;
     }
 }
 
+void exibirTituloDaOpcao (string titulo)
+{
+    int quantidadeDeLetras = titulo.Length;
+    string asteriscos = string.Empty.PadLeft(quantidadeDeLetras, '*');
+    Console.WriteLine(asteriscos);
+    Console.WriteLine(titulo);
+    Console.WriteLine(asteriscos + "\n");
+}
+
 void RegistrarBanda()
 {
     Console.Clear();
-    Console.WriteLine("Registro de bandas");
+    exibirTituloDaOpcao("Registro de bandas");
     Console.Write("Digite o nome da banda que deseja registrar: ");
     string nomeDaBanda = Console.ReadLine()!;
-    listaDeBandas.Add(nomeDaBanda);
+    bandasRegistradas.Add(nomeDaBanda, new List<int>());
     Console.WriteLine($"A banda {nomeDaBanda} foi registrada");
     Thread.Sleep(2000);
     Console.Clear();
@@ -77,20 +112,66 @@ void RegistrarBanda()
 void ExibirBandas()
 {
     Console.Clear();
-    Console.WriteLine("Bandas Registradas:");
+    exibirTituloDaOpcao("Bandas Registradas:");
     //for (int i = 0; i < listaDeBandas.Count; i++)
     //{
     //    Console.WriteLine($"Banda {i+1}: {listaDeBandas[i]}");
     //}
-    foreach (string banda in listaDeBandas)
+    foreach (string banda in bandasRegistradas.Keys)
     {
         Console.WriteLine($"Banda: {banda}");
     }
+    voltar();
 }
+
+void AvaliarBanda()
+{
+    Console.Clear();
+    exibirTituloDaOpcao("Avaliar Banda");
+    Console.Write("Digite o nome da banda que deseja avaliar: ");
+    string nomeDaBanda = Console.ReadLine()!;
+    //verificar se a banda existe
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        Console.Write($"Qual a nota que a banda {nomeDaBanda} merece?" +
+            $"\nDigite uma nota de 0 a 10: ");
+        int nota = int.Parse(Console.ReadLine()!);
+        bandasRegistradas[nomeDaBanda].Add(nota);
+        Console.WriteLine($"A nota {nota} para a banda {nomeDaBanda} foi registrada com sucesso");
+        voltar();
+    }
+    else
+    {
+        Console.WriteLine($"A banda {nomeDaBanda} não foi encontrada");
+        voltar();
+    }
+}
+
+void ExibirNotaMedia()
+{
+    Console.Clear();
+    exibirTituloDaOpcao("Nota média da Banda");
+    Console.Write("Digite o nome da banda que deseja consulta a nota média: ");
+    string nomeDaBanda = Console.ReadLine()!;
+    //verificar se a banda existe
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        List<int> notasDaBanda = bandasRegistradas[nomeDaBanda];
+        double notaMedia = notasDaBanda.Average();
+        Console.WriteLine($"A nota média da banda {nomeDaBanda} é: {notaMedia}");
+        voltar();
+    }
+    else
+    {
+        Console.WriteLine($"A banda {nomeDaBanda} não foi encontrada");
+        voltar();
+    }
+}
+
 ExibirLogo();
 ExibirOpcoesDoMenu();
 
-//Jogo desafio - Número aleatório
+////Jogo desafio - Número aleatório
 //Random numeroAleatorio = new Random();
 //int numero = numeroAleatorio.Next(1, 101);
 //string numeroString = numero.ToString();
@@ -108,3 +189,28 @@ ExibirOpcoesDoMenu();
 //}
 //while (palpite != numeroString);
 //Console.WriteLine("Parabéns! Você acertou");
+
+////Desafio números
+//List<int> listaNumeros = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+//for (int i = 0; i < listaNumeros.Count; i++)
+//{
+//    if (listaNumeros[i] != 0 && listaNumeros[i] % 2 == 0)
+//        Console.WriteLine(listaNumeros[i]);
+//}
+//foreach (int numero in listaNumeros)
+//{
+//    if (numero != 0 && numero % 2 == 0) Console.WriteLine(numero);
+//}
+
+////exercício
+//Dictionary<string, List<int>> vendasCarros = new Dictionary<string, List<int>> {
+//    { "Bugatti Veyron", new List<int> { 10, 15, 12, 8, 5 } },
+//    { "Koenigsegg Agera RS", new List<int> { 2, 3, 5, 6, 7 } },
+//    { "Lamborghini Aventador", new List<int> { 20, 18, 22, 24, 16 } },
+//    { "Pagani Huayra", new List<int> { 4, 5, 6, 5, 4 } },
+//    { "Ferrari LaFerrari", new List<int> { 7, 6, 5, 8, 10 } }
+//};
+
+//List<int> vendasFerrari = vendasCarros["Ferrari LaFerrari"];
+//double mediaVendasFerrari = vendasFerrari.Average();
+//Console.WriteLine(mediaVendasFerrari);
